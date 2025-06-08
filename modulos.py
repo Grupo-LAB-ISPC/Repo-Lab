@@ -24,9 +24,16 @@ def crear_usuario():
         print("El usuario ya existe.")
         print("=====================\n")
         return
+
     contrasena = input("Crear contraseña: ")
-    usuarios[usuario] = contrasena
-    print("Usuario creado correctamente.")
+    if not usuarios:
+        rol = "admin"
+        print("Primer usuario registrado. Asignado como ADMIN.")
+    else:
+        rol = "estandar"
+
+    usuarios[usuario] = {"contrasena": contrasena, "rol": rol}
+    print(f"Usuario creado correctamente con rol '{rol}'.")
     print("=====================\n")
 
 def iniciar_sesion():
