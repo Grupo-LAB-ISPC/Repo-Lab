@@ -1,6 +1,5 @@
 usuarios = {}
 dispositivos = {}
-## comentario de PRUEBA
 #Gestor de usuarios
  
 def menu_sesion():
