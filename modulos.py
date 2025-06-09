@@ -2,22 +2,9 @@ usuarios = {}
 dispositivos = {}
 automatizaciones_activas = []
 
-#Gestor de usuarios
- 
-def menu_sesion():
-    while True:
-        print("1. Crear usuario")
-        print("2. Iniciar sesion")
-        print("3. Salir")
-        opcion = input("Seleccione una opcion: ")
-        print("=====================")
-
-        if opcion == "1":
-            crear_usuario()
-        elif opcion == "2":
-            iniciar_sesion()
-        else:
-            print("Opcion no valida.\n")
+# ========================
+# GESTOR DE USUARIOS
+# ========================
 
 def crear_usuario():
     usuario = input("Crear nuevo nombre de usuario: ")
@@ -44,60 +31,44 @@ def iniciar_sesion():
             print("Usuario inexistente.")
             print("=====================\n")
             continue
-        
+
         contrasena = input("Contraseña: ")
-        if usuarios[usuario] == contrasena:
+        if usuarios[usuario]["contrasena"] == contrasena:
             print("=====================")
-            print("Inicio de sesión exitoso. ¡Bienvenido!\n")
-            return True 
+            print(f"Inicio de sesión exitoso. ¡Bienvenido, {usuario}!\n")
+            return usuario
         else:
             print("=====================")
             print("Contraseña incorrecta. Intente nuevamente.\n")
 
-def menu_estandar(usuario):
-    while True:
-        print("=== Menú Usuario Estándar ===")
-        print("1. Consultar datos personales")
-        print("2. Ejecutar automatización predefinida (modo ahorro)")
-        print("3. Consultar dispositivos")
-        print("4. Salir")
-        opcion = input("Seleccione una opción: ")
-        print("=====================")
+def ver_datos_personales(usuario):
+    datos = usuarios[usuario]
+    print("=====================")
+    print(f"Usuario: {usuario}")
+    print(f"Rol: {datos['rol']}")
+    print("=====================\n")
 
-        if opcion == "1":
-            ver_datos_personales(usuario)
-        elif opcion == "2":
-            modo_ahorro_energia()
-        elif opcion == "3":
-            mostrar_dispositivos()
-        elif opcion == "4":
-            break
-        else:
-            print("Opción no válida.\n")
+def modificar_rol_usuario():
+    print("Usuarios disponibles:")
+    for user in usuarios:
+        print(f"- {user} (rol actual: {usuarios[user]['rol']})")
+    
+    objetivo = input("Ingrese el nombre del usuario a modificar: ")
+    if objetivo not in usuarios:
+        print("Usuario no encontrado.")
+        return
 
+    nuevo_rol = input("Nuevo rol ('admin' o 'estandar'): ").strip().lower()
+    if nuevo_rol not in ["admin", "estandar"]:
+        print("Rol inválido.")
+        return
 
-def menu_admin(usuario):
-    while True:
-        print("=== Menú Admin ===")
-        print("1. Gestionar dispositivos")
-        print("2. Consultar automatizaciones activas")
-        print("3. Modificar rol de un usuario")
-        print("4. Salir")
-        opcion = input("Seleccione una opción: ")
-        print("=====================")
+    usuarios[objetivo]["rol"] = nuevo_rol
+    print(f"Rol de '{objetivo}' modificado a '{nuevo_rol}' exitosamente.\n")
 
-        if opcion == "1":
-            dispositivos_menu()
-        elif opcion == "2":
-            consultar_automatizaciones()
-        elif opcion == "3":
-            modificar_rol_usuario()
-        elif opcion == "4":
-            break
-        else:
-            print("Opción no válida.\n")
-
-#Gestor de dispositivos
+# ========================
+# GESTOR DE DISPOSITIVOS
+# ========================
 
 def mostrar_dispositivos():
     if not dispositivos:
@@ -168,17 +139,68 @@ def modo_ahorro_energia():
     for nombre, datos in dispositivos.items():
         if datos["esencial"] == "sí" and datos["estado"] == "apagado":
             datos["estado"] = "prendido"
-            print(f"Dispositivo esencial '{nombre}' encendido.")
         elif datos["esencial"] == "no" and datos["estado"] == "prendido":
             datos["estado"] = "apagado"
-            print(f"Dispositivo no esencial '{nombre}' apagado.")
-    
+
+    automatizaciones_activas.append("Ahorro de energía aplicado")
     print("Modo ahorro de energía aplicado.")
     print("=====================\n")
-    automatizaciones_activas.append("Modo ahorro de energía activado")
-    print("Estado actual de los dispositivos: ")
-    mostrar_dispositivos()
+
+def consultar_automatizaciones():
+    if not automatizaciones_activas:
+        print("No hay automatizaciones activas.")
+    else:
+        print("Automatizaciones activas:")
+        for a in automatizaciones_activas:
+            print(f"- {a}")
     print("=====================\n")
+
+# ========================
+# MENÚS SEGÚN ROL
+# ========================
+
+def menu_estandar(usuario):
+    while True:
+        print("=== Menú Usuario Estándar ===")
+        print("1. Consultar datos personales")
+        print("2. Ejecutar automatización predefinida (modo ahorro)")
+        print("3. Consultar dispositivos")
+        print("4. Salir")
+        opcion = input("Seleccione una opción: ")
+        print("=====================")
+
+        if opcion == "1":
+            ver_datos_personales(usuario)
+        elif opcion == "2":
+            modo_ahorro_energia()
+        elif opcion == "3":
+            mostrar_dispositivos()
+        elif opcion == "4":
+            break
+        else:
+            print("Opción no válida.\n")
+
+def menu_admin(usuario):
+    while True:
+        print("=== Menú Admin ===")
+        print("1. Gestionar dispositivos")
+        print("2. Consultar automatizaciones activas")
+        print("3. Modificar rol de un usuario")
+        print("4. Salir")
+        opcion = input("Seleccione una opción: ")
+        print("=====================")
+
+        if opcion == "1":
+            dispositivos_menu()
+        elif opcion == "2":
+            consultar_automatizaciones()
+        elif opcion == "3":
+            modificar_rol_usuario()
+        elif opcion == "4":
+            break
+        else:
+            print("Opción no válida.\n")
+
 
 def dispositivos_menu():
     while True:
@@ -200,41 +222,6 @@ def dispositivos_menu():
         elif opcion == "4":
             modo_ahorro_energia()
         elif opcion == "5":
-            print("Programa finalizado.")
             break
         else:
             print("Opción no valida.\n")
-            
-def consultar_automatizaciones():
-    if not automatizaciones_activas:
-        print("No hay automatizaciones activas.")
-    else:
-        print("Automatizaciones activas:")
-        for auto in automatizaciones_activas:
-            print(f"- {auto}")
-    print("=====================\n")
-
-def modificar_rol_usuario():
-    print("Usuarios disponibles:")
-    for user in usuarios:
-        print(f"- {user} (rol actual: {usuarios[user]['rol']})")
-    
-    objetivo = input("Ingrese el nombre del usuario a modificar: ")
-    if objetivo not in usuarios:
-        print("Usuario no encontrado.")
-        return
-
-    nuevo_rol = input("Nuevo rol ('admin' o 'estandar'): ").strip().lower()
-    if nuevo_rol not in ["admin", "estandar"]:
-        print("Rol inválido.")
-        return
-
-    usuarios[objetivo]["rol"] = nuevo_rol
-    print(f"Rol de '{objetivo}' modificado a '{nuevo_rol}' exitosamente.\n")
-
-def ver_datos_personales(usuario):
-    datos = usuarios[usuario]
-    print("=====================")
-    print(f"Usuario: {usuario}")
-    print(f"Rol: {datos['rol']}")
-    print("=====================\n")
