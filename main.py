@@ -12,8 +12,14 @@ def menu_principal():
         if opcion == "1":
             crear_usuario()
         elif opcion == "2":
-            if iniciar_sesion():
-                dispositivos_menu()
+            usuario = iniciar_sesion()
+            if usuario:
+                rol = usuarios[usuario]["rol"]
+            if rol == "admin":
+                menu_admin(usuario)
+            else:
+                menu_estandar(usuario)
+
         elif opcion == "3":
             print("Programa finalizado.")
             break

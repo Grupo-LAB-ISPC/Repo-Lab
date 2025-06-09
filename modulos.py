@@ -53,6 +53,48 @@ def iniciar_sesion():
             print("=====================")
             print("Contraseña incorrecta. Intente nuevamente.\n")
 
+def menu_estandar(usuario):
+    while True:
+        print("=== Menú Usuario Estándar ===")
+        print("1. Consultar datos personales")
+        print("2. Ejecutar automatización predefinida (modo ahorro)")
+        print("3. Consultar dispositivos")
+        print("4. Salir")
+        opcion = input("Seleccione una opción: ")
+        print("=====================")
+
+        if opcion == "1":
+            ver_datos_personales(usuario)
+        elif opcion == "2":
+            modo_ahorro_energia()
+        elif opcion == "3":
+            mostrar_dispositivos()
+        elif opcion == "4":
+            break
+        else:
+            print("Opción no válida.\n")
+
+
+def menu_admin(usuario):
+    while True:
+        print("=== Menú Admin ===")
+        print("1. Gestionar dispositivos")
+        print("2. Consultar automatizaciones activas")
+        print("3. Modificar rol de un usuario")
+        print("4. Salir")
+        opcion = input("Seleccione una opción: ")
+        print("=====================")
+
+        if opcion == "1":
+            dispositivos_menu()
+        elif opcion == "2":
+            consultar_automatizaciones()
+        elif opcion == "3":
+            modificar_rol_usuario()
+        elif opcion == "4":
+            break
+        else:
+            print("Opción no válida.\n")
 
 #Gestor de dispositivos
 
