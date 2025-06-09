@@ -1,5 +1,7 @@
 usuarios = {}
 dispositivos = {}
+automatizaciones_activas = []
+
 #Gestor de usuarios
  
 def menu_sesion():
@@ -173,6 +175,7 @@ def modo_ahorro_energia():
     
     print("Modo ahorro de energía aplicado.")
     print("=====================\n")
+    automatizaciones_activas.append("Modo ahorro de energía activado")
     print("Estado actual de los dispositivos: ")
     mostrar_dispositivos()
     print("=====================\n")
@@ -201,4 +204,13 @@ def dispositivos_menu():
             break
         else:
             print("Opción no valida.\n")
+            
+def consultar_automatizaciones():
+    if not automatizaciones_activas:
+        print("No hay automatizaciones activas.")
+    else:
+        print("Automatizaciones activas:")
+        for auto in automatizaciones_activas:
+            print(f"- {auto}")
+    print("=====================\n")
 
