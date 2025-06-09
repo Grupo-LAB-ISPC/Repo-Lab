@@ -214,3 +214,27 @@ def consultar_automatizaciones():
             print(f"- {auto}")
     print("=====================\n")
 
+def modificar_rol_usuario():
+    print("Usuarios disponibles:")
+    for user in usuarios:
+        print(f"- {user} (rol actual: {usuarios[user]['rol']})")
+    
+    objetivo = input("Ingrese el nombre del usuario a modificar: ")
+    if objetivo not in usuarios:
+        print("Usuario no encontrado.")
+        return
+
+    nuevo_rol = input("Nuevo rol ('admin' o 'estandar'): ").strip().lower()
+    if nuevo_rol not in ["admin", "estandar"]:
+        print("Rol inválido.")
+        return
+
+    usuarios[objetivo]["rol"] = nuevo_rol
+    print(f"Rol de '{objetivo}' modificado a '{nuevo_rol}' exitosamente.\n")
+
+def ver_datos_personales(usuario):
+    datos = usuarios[usuario]
+    print("=====================")
+    print(f"Usuario: {usuario}")
+    print(f"Rol: {datos['rol']}")
+    print("=====================\n")
